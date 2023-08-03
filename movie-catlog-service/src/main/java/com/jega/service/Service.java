@@ -19,11 +19,11 @@ public class Service {
 	@Autowired
 	RestTemplate restTemplate;
 	public List<MovieCumRating> getResult(Integer userId){
-		PostSuccess[] arr=restTemplate.getForObject("http://localhost:1000/ratings/"+userId, PostSuccess[].class);
+		PostSuccess[] arr=restTemplate.getForObject("http://ratings-service/ratings/"+userId, PostSuccess[].class);
 		List<PostSuccess> lst=Arrays.asList(arr);
 		List<MovieCumRating> result=new ArrayList<>();
 		lst.forEach(rating->{
-			Movie m=restTemplate.getForObject("http://localhost:1001/movieinfo/"+rating.getMovieId(), Movie.class);
+			Movie m=restTemplate.getForObject("http://movie-service/movieinfo/"+rating.getMovieId(), Movie.class);
 			result.add(new MovieCumRating(rating.getMovieId(),m.getMovieName(),rating.getRating()));
 		});
 		return result;
